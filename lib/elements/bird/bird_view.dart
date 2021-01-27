@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
-
-class Bird extends CustomPainter {
+class BirdView extends CustomPainter {
   var altura;
-  Bird(this.image, this.altura);
-
   ui.Image image;
+  BirdView(this.image, this.altura);
 
   @override
   void paint(Canvas canvas, Size size) async {
