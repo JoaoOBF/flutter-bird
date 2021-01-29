@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:ui' as ui;
-
 import 'package:bird/elements/bird/bird.dart';
 import 'package:bird/elements/bird/bird_view.dart';
+import 'package:bird/elements/tubes/tubes.dart';
+import 'package:bird/elements/tubes/tubes_view.dart';
 import 'package:flutter/material.dart';
-import 'dart:typed_data';
-
-import 'package:flutter/services.dart';
 
 class Game extends StatefulWidget {
   Game({Key key}) : super(key: key);
@@ -18,12 +15,15 @@ class Game extends StatefulWidget {
 class _GameState extends State<Game> {
   Timer game;
   Bird bird;
+  Tubes tubes;
 
   bool isLoadedElements = false;
+  bool isRun = false;
 
   @override
   void initState() {
     bird = Bird(context);
+    tubes = Tubes();
     super.initState();
   }
 
@@ -31,8 +31,11 @@ class _GameState extends State<Game> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        bird.pula();
-         setState(() {});
+        if (isRun) {
+          bird.pula();
+        } else {
+          _run();
+        }
       },
       child: Container(
         color: Colors.white,
@@ -47,6 +50,7 @@ class _GameState extends State<Game> {
                   CustomPaint(
                     painter: BirdView(bird.image, bird.altura),
                   ),
+                  TubesView(tubes: tubes)
                 ],
               );
             }
@@ -59,8 +63,10 @@ class _GameState extends State<Game> {
   }
 
   _run() {
-    game = Timer.periodic(Duration(milliseconds: 10), (_) {
-      bird.cai();
+    game = Timer.periodic(Duration(microseconds: 10000), (_) {
+      isRun = true;
+       bird.cai();
+      tubes.move();
       setState(() {});
     });
   }
@@ -76,7 +82,7 @@ class _GameState extends State<Game> {
 
     await bird.init();
     isLoadedElements = true;
-   // _run();
+    // _run();
     return true;
   }
 }
