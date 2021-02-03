@@ -7,7 +7,9 @@ import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 
 class Bird implements IBird {
-  double altura = 0.0;
+  double altura = 80.0;
+  final x = 100.0;
+  final radius = 40.0;
   var image;
   BuildContext context;
 
@@ -23,8 +25,6 @@ class Bird implements IBird {
     bool chegouNoChao = this.altura > MediaQuery.of(context).size.height;
     if (!chegouNoChao) {
       this.altura += 5;
-    }else{
-      this.altura = 0.0;
     }
   }
 

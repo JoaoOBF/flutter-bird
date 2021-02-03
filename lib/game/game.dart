@@ -23,7 +23,7 @@ class _GameState extends State<Game> {
   @override
   void initState() {
     bird = Bird(context);
-    tubes = Tubes();
+    tubes = Tubes(bird);
     super.initState();
   }
 
@@ -47,10 +47,21 @@ class _GameState extends State<Game> {
             if (snap.hasData && snap.data) {
               return Stack(
                 children: [
-                  CustomPaint(
-                    painter: BirdView(bird.image, bird.altura),
+                  new Container(
+                    decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                        image: new AssetImage("assets/background.png"),
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
                   ),
-                  TubesView(tubes: tubes)
+                  CustomPaint(
+                    painter: BirdView(bird),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left:108.0),
+                    child: TubesView(tubes: tubes),
+                  )
                 ],
               );
             }
@@ -63,15 +74,19 @@ class _GameState extends State<Game> {
   }
 
   _run() {
-    game = Timer.periodic(Duration(microseconds: 10000), (_) {
+    game = Timer.periodic(Duration(milliseconds: 100), (_) {
       isRun = true;
-       bird.cai();
+      bird.cai();
       tubes.move();
+      if(tubes.colision()) {
+         _stop();
+      }
       setState(() {});
     });
   }
 
   _stop() {
+    isRun = false;
     game.cancel();
   }
 

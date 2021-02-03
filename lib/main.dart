@@ -1,4 +1,5 @@
 import 'package:bird/game/game.dart';
+import 'package:bird/utils/screen_utils.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,7 +10,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return LayoutBuilder(builder: (_, constraints){
+      ScreenUtils.init(constraints);
+      return MaterialApp(
         title: 'Flutter Bird',
         theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -18,5 +21,6 @@ class MyApp extends StatelessWidget {
         home: Scaffold(
           body: Game(),
         ));
+    });
   }
 }

@@ -12,7 +12,7 @@ class TubesView extends StatelessWidget {
       child: Row(
         children: tubes.tubes
             .map<Widget>((tube) => CustomPaint(
-                painter: TubeView(MediaQuery.of(context).size.height,
+                painter: TubeView(
                     tube.position, tube.height)))
             .toList(),
       ),
