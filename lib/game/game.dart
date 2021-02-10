@@ -33,51 +33,53 @@ class _GameState extends State<Game> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (isRun) {
-          bird.pula();
-        } else {
-          _run();
-        }
-      },
-      child: Container(
-        color: Colors.white,
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: FutureBuilder(
-          initialData: false,
-          builder: (_, snap) {
-            if (snap.hasData && snap.data) {
-              return Stack(
-                children: [
-                  new Container(
-                    decoration: new BoxDecoration(
-                      image: new DecorationImage(
-                        image: new AssetImage("assets/background.png"),
-                        fit: BoxFit.fitHeight,
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () {
+          if (isRun) {
+            bird.pula();
+          } else {
+            _run();
+          }
+        },
+        child: Container(
+          color: Colors.white,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: FutureBuilder(
+            initialData: false,
+            builder: (_, snap) {
+              if (snap.hasData && snap.data) {
+                return Stack(
+                  children: [
+                    new Container(
+                      decoration: new BoxDecoration(
+                        image: new DecorationImage(
+                          image: new AssetImage("assets/background.png"),
+                          fit: BoxFit.fitHeight,
+                        ),
                       ),
                     ),
-                  ),
-                  CustomPaint(
-                    painter: BirdView(bird),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 108.0),
-                    child: TubesView(tubes: tubes),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(45.0),
-                    child: PointsView(
-                      points: '${points.points}',
+                    CustomPaint(
+                      painter: BirdView(bird),
                     ),
-                  ),
-                ],
-              );
-            }
-            return new Center(child: new Text('loading'));
-          },
-          future: _initElements(),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 108.0),
+                      child: TubesView(tubes: tubes),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(45.0),
+                      child: PointsView(
+                        points: '${points.points}',
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return new Center(child: new Text('loading'));
+            },
+            future: _initElements(),
+          ),
         ),
       ),
     );
@@ -98,6 +100,7 @@ class _GameState extends State<Game> {
   _stop() {
     isRun = false;
     game.cancel();
+     Navigator.of(context).pushNamed('/game-over');
   }
 
   Future<bool> _initElements() async {
