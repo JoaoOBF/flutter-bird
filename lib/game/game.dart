@@ -91,7 +91,7 @@ class _GameState extends State<Game> {
       bird.cai();
       tubes.move();
       if (tubes.colision()) {
-        _stop();
+        //_stop();
       }
       setState(() {});
     });
@@ -100,7 +100,7 @@ class _GameState extends State<Game> {
   _stop() {
     isRun = false;
     game.cancel();
-     Navigator.of(context).pushNamed('/game-over');
+    Navigator.of(context).pushNamed('/game-over');
   }
 
   Future<bool> _initElements() async {

@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:bird/elements/bird/bird.dart';
 import 'package:bird/utils/screen_utils.dart';
 
+
 class Tube implements ITube {
   final Bird bird;
+  var image;
   int position;
   double height;
 

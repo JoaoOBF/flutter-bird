@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:bird/utils/sound_play.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
@@ -10,6 +11,7 @@ class Bird implements IBird {
   double altura = 80.0;
   final x = 100.0;
   final radius = 40.0;
+  final SoundPlay soundPlay = SoundPlay('assets/fly.mp3');
   var image;
   BuildContext context;
 
@@ -18,17 +20,25 @@ class Bird implements IBird {
   @override
   void pula() {
     this.altura -= 150;
+    if (this.altura < 0) {
+      this.altura = 0;
+    }
+
+
+    soundPlay.play();
   }
 
   @override
   void cai() {
-    bool chegouNoChao = this.altura > MediaQuery.of(context).size.height;
+    bool chegouNoChao =
+        this.altura + this.radius > MediaQuery.of(context).size.height;
     if (!chegouNoChao) {
       this.altura += 5;
     }
   }
 
   Future<Null> init() async {
+    altura = MediaQuery.of(context).size.height / 2;
     final ByteData data = await rootBundle.load('assets/passaro.png');
     image = await _loadImage(new Uint8List.view(data.buffer));
     return;
