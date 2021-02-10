@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:bird/elements/bird/bird.dart';
 import 'package:bird/elements/bird/bird_view.dart';
+import 'package:bird/elements/points/points.dart';
+import 'package:bird/elements/points/points_view.dart';
 import 'package:bird/elements/tubes/tubes.dart';
 import 'package:bird/elements/tubes/tubes_view.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +18,16 @@ class _GameState extends State<Game> {
   Timer game;
   Bird bird;
   Tubes tubes;
-
+  Points points;
   bool isLoadedElements = false;
   bool isRun = false;
 
   @override
   void initState() {
     bird = Bird(context);
-    tubes = Tubes(bird);
+    points = Points();
+    tubes = Tubes(bird, points);
+
     super.initState();
   }
 
@@ -59,9 +63,15 @@ class _GameState extends State<Game> {
                     painter: BirdView(bird),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left:108.0),
+                    padding: const EdgeInsets.only(left: 108.0),
                     child: TubesView(tubes: tubes),
-                  )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(45.0),
+                    child: PointsView(
+                      points: '${points.points}',
+                    ),
+                  ),
                 ],
               );
             }
@@ -78,8 +88,8 @@ class _GameState extends State<Game> {
       isRun = true;
       bird.cai();
       tubes.move();
-      if(tubes.colision()) {
-         _stop();
+      if (tubes.colision()) {
+        _stop();
       }
       setState(() {});
     });

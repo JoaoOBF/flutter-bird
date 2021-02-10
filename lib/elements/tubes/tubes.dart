@@ -1,12 +1,14 @@
 import 'package:bird/elements/bird/bird.dart';
+import 'package:bird/elements/points/points.dart';
 import 'package:bird/elements/tubes/tube.dart';
 import 'dart:math';
 
 class Tubes implements ITubes {
   final Bird bird;
+  final Points points;
   List<Tube> tubes = List<Tube>();
 
-  Tubes(this.bird) {
+  Tubes(this.bird, this.points) {
     int pos = 40;
     for (int i = 0; i < 5; i++) {
       pos += 100;
@@ -22,7 +24,7 @@ class Tubes implements ITubes {
       Tube tube = iterator.current;
       tube.move();
       if (tube.leftScreen()) {
-        print("remove:${tube.position}");
+        points.increase();
         tubes.remove(tube);
         Tube newTube = new Tube(max + 100, bird);
         tubes.insert(tubes.length - 1, newTube);
