@@ -11,7 +11,7 @@ class Tubes implements ITubes {
   Tubes(this.bird, this.points) {
     int pos = 40;
     for (int i = 0; i < 5; i++) {
-      pos += 100;
+      pos += 80;
       this.tubes.add(new Tube(pos, bird));
     }
   }
@@ -44,8 +44,11 @@ class Tubes implements ITubes {
   @override
   bool colision() {
    for (Tube tube in tubes) {
-       if (tube.crossedHorizontally() && tube.crossedVertically())
-                return true;
+       if (tube.crossedVertically() && tube.crossedHorizontally() ) {
+       
+       return true;
+       }
+              
     }
     return false;
   }

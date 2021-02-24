@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:bird/elements/bird/bird.dart';
 import 'package:bird/utils/screen_utils.dart';
 
-
 class Tube implements ITube {
   final Bird bird;
   var image;
@@ -32,11 +31,13 @@ class Tube implements ITube {
 
   @override
   crossedHorizontally() {
-    return this.position < bird.radius;
+    return this.position - 70 < bird.radius;
   }
 
   @override
   crossedVertically() {
+    // print('top:${ScreenUtils.screenHeight / 2 - height}');
+    print('bird:${bird.altura - bird.radius}');
     return bird.altura - bird.radius < ScreenUtils.screenHeight / 2 - height ||
         bird.altura + bird.radius > ScreenUtils.screenHeight - height;
   }

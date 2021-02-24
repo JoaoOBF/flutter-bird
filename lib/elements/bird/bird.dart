@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:bird/elements/time/time.dart';
 import 'package:bird/utils/sound_play.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
@@ -9,31 +10,33 @@ import 'package:flutter/services.dart';
 
 class Bird implements IBird {
   double altura = 80.0;
+  Time time;
   final x = 100.0;
   final radius = 40.0;
   final SoundPlay soundPlay = SoundPlay('assets/fly.mp3');
   var image;
   BuildContext context;
 
-  Bird(this.context);
+  Bird(this.context, this.time);
 
   @override
-  void pula() {
-    this.altura -= 150;
+  void jump() {
+    this.time.restart();
     if (this.altura < 0) {
       this.altura = 0;
     }
-
 
     soundPlay.play();
   }
 
   @override
-  void cai() {
-    bool chegouNoChao =
+  void fall() {
+    bool onthefloor =
         this.altura + this.radius > MediaQuery.of(context).size.height;
-    if (!chegouNoChao) {
-      this.altura += 5;
+    double current = this.time.getCurrent();
+    double newHeight = -5 + ((10 * (current * current)) / 2);
+    if (!onthefloor) {
+      this.altura += newHeight;
     }
   }
 
@@ -54,6 +57,6 @@ class Bird implements IBird {
 }
 
 abstract class IBird {
-  void pula();
-  void cai();
+  void jump();
+  void fall();
 }

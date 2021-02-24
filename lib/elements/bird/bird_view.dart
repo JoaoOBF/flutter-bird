@@ -8,7 +8,7 @@ class BirdView extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) async {
-    canvas.drawCircle(Offset(bird.x - 50, bird.altura), bird.radius, new Paint());
+    
     canvas.drawImage(bird.image, new Offset(10.0, bird.altura - bird.radius), new Paint());
   }
 

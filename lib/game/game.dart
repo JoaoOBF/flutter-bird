@@ -3,6 +3,7 @@ import 'package:bird/elements/bird/bird.dart';
 import 'package:bird/elements/bird/bird_view.dart';
 import 'package:bird/elements/points/points.dart';
 import 'package:bird/elements/points/points_view.dart';
+import 'package:bird/elements/time/time.dart';
 import 'package:bird/elements/tubes/tubes.dart';
 import 'package:bird/elements/tubes/tubes_view.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +20,14 @@ class _GameState extends State<Game> {
   Bird bird;
   Tubes tubes;
   Points points;
+  Time time;
   bool isLoadedElements = false;
   bool isRun = false;
 
   @override
   void initState() {
-    bird = Bird(context);
+    time = Time();
+    bird = Bird(context, time);
     points = Points();
     tubes = Tubes(bird, points);
 
@@ -37,7 +40,7 @@ class _GameState extends State<Game> {
       body: GestureDetector(
         onTap: () {
           if (isRun) {
-            bird.pula();
+            bird.jump();
           } else {
             _run();
           }
@@ -64,7 +67,7 @@ class _GameState extends State<Game> {
                       painter: BirdView(bird),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 108.0),
+                      padding: const EdgeInsets.only(left: 10.0),
                       child: TubesView(tubes: tubes),
                     ),
                     Padding(
@@ -86,20 +89,26 @@ class _GameState extends State<Game> {
   }
 
   _run() {
-    game = Timer.periodic(Duration(milliseconds: 100), (_) {
-      isRun = true;
-      bird.cai();
-      tubes.move();
-      if (tubes.colision()) {
-        //_stop();
-      }
-      setState(() {});
+    Timer.run(() async {
+      do {
+        isRun = true;
+        time.pass();
+        tubes.move();
+        bird.fall();
+
+        if (tubes.colision()) {
+          _stop();
+        }
+
+        setState(() {});
+        await Future.delayed(Duration(milliseconds: 50));
+      } while (isRun);
     });
   }
 
   _stop() {
     isRun = false;
-    game.cancel();
+    //game.cancel();
     Navigator.of(context).pushNamed('/game-over');
   }
 
